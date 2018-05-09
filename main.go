@@ -15,11 +15,12 @@ const usage = "" +
 	`keyx computes funny hash of input data.
 
 Usage:
-  keyx -c <case>| --case=<case>
+  keyx [--no-prefix] -c <case> | --case=<case>
   keyx -v | --version
   keyx -h | --help
 
 Options:
+  --no-prefix               Do not use prefix before reading data from stdin. 
   -c <case>, --case=<case>  Case used in hash string: 0 is lower, 1 is upper.
   -v, --version             Show version.
   -h, --help                Show this screen.
@@ -35,8 +36,12 @@ func main() {
 		fmt.Println(version)
 		os.Exit(0)
 	}
+	if arguments["--no-prefix"].(bool) {
+		fmt.Print("")
+	} else {
+		fmt.Print("> ")
+	}
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("> ")
 	data, _ := reader.ReadBytes('\n')
 	hash := blake2b.Sum256(data)
 	switch c := arguments["--case"]; {
