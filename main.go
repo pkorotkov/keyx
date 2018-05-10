@@ -21,7 +21,7 @@ Usage:
 
 Options:
   --no-prefix               Do not use prefix before reading data from stdin. 
-  -c <case>, --case=<case>  Case used in hash string: 0 is lower, 1 is upper.
+  -c <case>, --case=<case>  Set letter case used in hash string: 0 is lower, 1 is upper.
   -v, --version             Show version.
   -h, --help                Show this screen.
 `
