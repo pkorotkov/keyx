@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"crypto/sha1"
 	"crypto/sha256"
 	"fmt"
@@ -46,6 +47,7 @@ func main() {
 	}
 	reader := bufio.NewReader(os.Stdin)
 	data, _ := reader.ReadBytes('\n')
+	data = append(bytes.TrimSpace(data), 10)
 	var hash []byte
 	switch arguments["--hash"] {
 	case "blake2b":
