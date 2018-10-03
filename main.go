@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"crypto/sha1"
 	"crypto/sha256"
 	"fmt"
@@ -17,16 +18,16 @@ const usage = "" +
 	`keyx computes a hash of input data.
 
 Usage:
-  keyx [--no-prefix] [--upper-case] [--hash=<hash>]
+  keyx [-n | --no-prefix] [-u | --upper-case] [--hash=<hash>]
   keyx -v | --version
   keyx -h | --help
 
 Options:
-  --no-prefix    Do not use prefix before reading data from stdin. 
-  --upper-case   Use upper case (instead of lower case) for hex string.
-  --hash=<hash>  Set the hash algorithm (blake2b, sha1, sha256) [default: blake2b].
-  -v, --version  Show version.
-  -h, --help     Show this screen.
+  -n, --no-prefix   Do not use prefix before data read from stdin. 
+  -u, --upper-case  Use upper case (instead of lower case as default) for hex string.
+  --hash=<hash>     Set the hash algorithm (blake2b-256, sha-1, sha-256) [default: blake2b-256].
+  -v, --version     Show version.
+  -h, --help        Show this screen.
 `
 
 func main() {
@@ -46,15 +47,16 @@ func main() {
 	}
 	reader := bufio.NewReader(os.Stdin)
 	data, _ := reader.ReadBytes('\n')
+	data = bytes.TrimSpace(data)
 	var hash []byte
 	switch arguments["--hash"] {
-	case "blake2b":
+	case "blake2b-256":
 		h := blake2b.Sum256(data)
 		hash = h[:]
-	case "sha1":
+	case "sha-1":
 		h := sha1.Sum(data)
 		hash = h[:]
-	case "sha256":
+	case "sha-256":
 		h := sha256.Sum256(data)
 		hash = h[:]
 	default:
